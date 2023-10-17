@@ -5,10 +5,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -23,11 +27,17 @@ public class Customer implements Serializable {
     private Long customerId;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String identificationNumber;
     private String contactNumber;
     private String addressLine1;
     private String addressLine2;
     private String postalCode;
+    
+    @OneToOne
+    private AtmCard atmCard;
+    @OneToMany(mappedBy="Customer")
+    private List<DepositAccount> listOfDepositAccount;
 
     public Customer() {
     }

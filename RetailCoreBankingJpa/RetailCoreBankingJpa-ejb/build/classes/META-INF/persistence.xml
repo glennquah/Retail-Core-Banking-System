@@ -4,6 +4,9 @@
     <jta-data-source>jdbc/retailCoreBankingJpa</jta-data-source>
     <class>entity.Customer</class>
     <class>entity.Employee</class>
+    <class>entity.AtmCard</class>
+    <class>entity.DepositAccount</class>
+    <class>entity.DepositAccountTransaction</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

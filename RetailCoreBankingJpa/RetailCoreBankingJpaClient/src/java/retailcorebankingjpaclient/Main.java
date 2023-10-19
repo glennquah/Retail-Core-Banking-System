@@ -4,7 +4,9 @@
  */
 package retailcorebankingjpaclient;
 
+import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
+import entity.Customer;
 import entity.Employee;
 import java.util.List;
 import java.util.Scanner;
@@ -17,8 +19,13 @@ import util.exception.InvalidLoginCredentialException;
  */
 public class Main {
 
+    @EJB(name = "CustomerSessionBeanRemote")
+    private static CustomerSessionBeanRemote customerSessionBeanRemote;
+
     @EJB(name = "EmployeeSessionBeanRemote")
     private static EmployeeSessionBeanRemote employeeSessionBeanRemote;
+    
+    
 
     
     public static void main(String[] args) throws InvalidLoginCredentialException {
@@ -105,13 +112,15 @@ public class Main {
     }
     
     public static void createACustomer(Scanner sc) {
-        System.out.println("*** Create A Customer ***");
+        System.out.println("\n*** Create A Customer ***");
         System.out.println("*** Input Customer Details ***\n\n");
         
         System.out.print("Enter Customer First Name> ");
-        String username = sc.nextLine().trim();
+        String firstName = sc.nextLine().trim();
+        System.out.print("Enter Customer Mid Name> ");
+        String midName = sc.nextLine().trim();
         System.out.print("Enter Customer Last Name> ");
-        String password = sc.nextLine().trim();
+        String lastName = sc.nextLine().trim();
         System.out.print("Enter Customer Identification Number> ");
         String ICNumber = sc.nextLine().trim();
         System.out.print("Enter Customer Contact Number> ");
@@ -123,5 +132,10 @@ public class Main {
         System.out.print("Postal Code> ");
         String postalCode = sc.nextLine().trim();
         
+        Customer newCustomer = new Customer(firstName, midName, lastName, ICNumber, contactNumber, address1, address2, postalCode);
+        
+        long id = customerSessionBeanRemote.createNewAccount(newCustomer);
+        System.out.println("Customer Created!");
+        System.out.println(id);
     }
 }

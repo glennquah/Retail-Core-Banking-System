@@ -26,6 +26,7 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
     private String firstName;
+    private String midName;
     private String lastName;
     @Column(unique = true)
     private String identificationNumber;
@@ -36,20 +37,23 @@ public class Customer implements Serializable {
     
     @OneToOne
     private AtmCard atmCard;
-    @OneToMany(mappedBy="Customer")
+    @OneToMany(mappedBy="customer")
     private List<DepositAccount> listOfDepositAccount;
 
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String identificationNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {
+    public Customer(String firstName, String midName, String lastName, String identificationNumber, String contactNumber, String addressLine1, String addressLine2, String postalCode) {
         this.firstName = firstName;
+        this.midName = midName;
         this.lastName = lastName;
         this.identificationNumber = identificationNumber;
         this.contactNumber = contactNumber;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
         this.postalCode = postalCode;
+        this.atmCard = null;
+        this.listOfDepositAccount = null;
     }
     
     

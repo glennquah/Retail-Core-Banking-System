@@ -11,7 +11,9 @@ import entity.Employee;
 import java.util.List;
 import java.util.Scanner;
 import javax.ejb.EJB;
+import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -28,11 +30,11 @@ public class Main {
     
 
     
-    public static void main(String[] args) throws InvalidLoginCredentialException {
+    public static void main(String[] args) throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {
         runApp(); 
     }
     
-    public static void runApp() throws InvalidLoginCredentialException {
+    public static void runApp() throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {
         Scanner sc = new Scanner(System.in);
         Integer response;
 
@@ -54,8 +56,8 @@ public class Main {
         }
     }
     
-    public static void login(Scanner sc) throws InvalidLoginCredentialException {
-        System.out.println("*** Retail Core Banking System :: Login ***\n");
+    public static void login(Scanner sc) throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {
+        System.out.println("\n*** Retail Core Banking System :: Login ***\n");
         String username = "";
         String password = "";
         System.out.print("Enter username> ");
@@ -72,25 +74,48 @@ public class Main {
         }
     }
     
-    public static void loginPage(Scanner sc, Employee emp) {
-        String welcomeMessage = String.format("*** Welcome %s to Teller Terminal ***\n\n", emp.getFirstName());
-        System.out.println(welcomeMessage);
-        System.out.println("1: Create a Customer");
-        System.out.println("2: Open Deposit Account");
-        System.out.println("3: Issue ATM Card");
-        System.out.println("4: Issue Replacement ATM Card");
-        System.out.println("5: Insert ATM Card");
-        System.out.println("6: Change PIN");
-        System.out.println("7: Enquire Available Balance");
-        System.out.println("8: Log Out\n");
-        
+    public static void loginPage(Scanner sc, Employee emp) throws UnknownPersistenceException, InvalidLoginCredentialException, CustomerNotFoundException {
+        String welcomeMessage = String.format("\n*** Welcome %s to Teller Terminal ***\n", emp.getFirstName());
         Integer response;
         while(true) {
+            System.out.println(welcomeMessage);
+            System.out.println("1: New Customer");
+            System.out.println("2: Recurring Customer");
+            System.out.println("3: Log Out\n");
+        
             System.out.print("> ");
             response = sc.nextInt();
             sc.nextLine();
             if(response == 1) {
-                createACustomer(sc);
+                Customer cust = createACustomer(sc);
+                customerLoginPage(sc, cust);
+            } else if (response == 2) {
+                Customer cust = recurringCust(sc);
+                customerLoginPage(sc, cust);
+            } else if (response == 3) {
+                runApp();
+            } else {
+                System.out.println("Invalid option, please try again!\n");
+            }
+        }
+    }
+    
+    public static void customerLoginPage(Scanner sc, Customer cust) {
+        String welcomeMessage = String.format("\n*** %s Account found, Please select the following options ***\n", cust.getFirstName());
+        Integer response;
+        while(true) {
+            System.out.println("1: Open Deposit Account");
+            System.out.println("2: Issue ATM Card");
+            System.out.println("3: Issue Replacement ATM Card");
+            System.out.println("4: Insert ATM Card");
+            System.out.println("5: Change PIN");
+            System.out.println("6: Enquire Available Balance");
+            System.out.println("7: back\n");
+            
+            System.out.print("> ");
+            response = sc.nextInt();
+            if(response == 1) {
+                System.out.println("1");
             } else if (response == 2) {
                 System.out.println("2");
             } else if (response == 3) {
@@ -102,8 +127,6 @@ public class Main {
             } else if (response == 6) {
                 System.out.println("6");
             } else if (response == 7) {
-                System.out.println("7");
-            } else if (response == 8) {
                 break;
             } else {
                 System.out.println("Invalid option, please try again!\n");
@@ -111,15 +134,13 @@ public class Main {
         }
     }
     
-    public static void createACustomer(Scanner sc) {
+    public static Customer createACustomer(Scanner sc) throws UnknownPersistenceException {
         System.out.println("\n*** Create A Customer ***");
         System.out.println("*** Input Customer Details ***\n\n");
         
         System.out.print("Enter Customer First Name> ");
         String firstName = sc.nextLine().trim();
         System.out.print("Enter Customer Mid Name> ");
-        String midName = sc.nextLine().trim();
-        System.out.print("Enter Customer Last Name> ");
         String lastName = sc.nextLine().trim();
         System.out.print("Enter Customer Identification Number> ");
         String ICNumber = sc.nextLine().trim();
@@ -132,10 +153,21 @@ public class Main {
         System.out.print("Postal Code> ");
         String postalCode = sc.nextLine().trim();
         
-        Customer newCustomer = new Customer(firstName, midName, lastName, ICNumber, contactNumber, address1, address2, postalCode);
+        Customer newCustomer = new Customer(firstName, lastName, ICNumber, contactNumber, address1, address2, postalCode);
         
         long id = customerSessionBeanRemote.createNewAccount(newCustomer);
-        System.out.println("Customer Created!");
-        System.out.println(id);
+        System.out.println("\nCustomer Created!");
+        System.out.println("Customer ID = " + id);
+        
+        return newCustomer;
+    }
+    
+    public static Customer recurringCust(Scanner sc) throws CustomerNotFoundException {
+        System.out.println("\n*** Recurring Customer ***");
+        System.out.print("Enter Customer Identification Number> ");
+        String ICNumber = sc.nextLine().trim();
+        
+        Customer cust = customerSessionBeanRemote.getCustomerAccount(ICNumber);
+        return cust;
     }
 }

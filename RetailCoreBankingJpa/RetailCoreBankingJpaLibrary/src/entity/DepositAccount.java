@@ -50,17 +50,18 @@ public class DepositAccount implements Serializable {
     public DepositAccount() {
     }
 
-    public DepositAccount(String accountNumber, DepositAccountType accountType, BigDecimal availableBalance, BigDecimal holdBalance, BigDecimal ledgerBalance, boolean enabled) {
+    public DepositAccount(String accountNumber, DepositAccountType accountType, BigDecimal availableBalance, Customer customer) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.availableBalance = availableBalance;
-        this.holdBalance = holdBalance;
-        this.ledgerBalance = ledgerBalance;
-        this.enabled = enabled;
+        this.holdBalance = availableBalance;
+        this.ledgerBalance = availableBalance;
+        this.enabled = true;
+        this.atmCard = null;
+        this.customer = customer;
+        this.listOfTransactions = null;
     }
     
-    
-
     public Long getDepositAccountId() {
         return depositAccountId;
     }

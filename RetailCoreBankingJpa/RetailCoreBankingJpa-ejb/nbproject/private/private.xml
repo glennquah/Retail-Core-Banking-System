@@ -9,6 +9,8 @@
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/EmployeeSessionBean.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/CustomerSessionBean.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/EmployeeSessionBeanLocal.java</file>
+            <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/DepositAccSessionBean.java</file>
+            <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/DepositAccSessionBeanLocal.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/CustomerSessionBeanLocal.java</file>
         </group>
     </open-files>

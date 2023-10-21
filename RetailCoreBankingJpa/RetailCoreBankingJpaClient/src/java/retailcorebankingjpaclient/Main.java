@@ -5,12 +5,16 @@
 package retailcorebankingjpaclient;
 
 import ejb.session.stateless.CustomerSessionBeanRemote;
+import ejb.session.stateless.DepositAccSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
 import entity.Customer;
+import entity.DepositAccount;
 import entity.Employee;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 import javax.ejb.EJB;
+import util.enumeration.DepositAccountType;
 import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
@@ -20,6 +24,9 @@ import util.exception.UnknownPersistenceException;
  * @author Lenovo
  */
 public class Main {
+
+    @EJB(name = "DepositAccSessionBeanRemote")
+    private static DepositAccSessionBeanRemote depositAccSessionBeanRemote;
 
     @EJB(name = "CustomerSessionBeanRemote")
     private static CustomerSessionBeanRemote customerSessionBeanRemote;
@@ -100,7 +107,7 @@ public class Main {
         }
     }
     
-    public static void customerLoginPage(Scanner sc, Customer cust) {
+    public static void customerLoginPage(Scanner sc, Customer cust) throws UnknownPersistenceException {
         String welcomeMessage = String.format("\n*** %s Account found, Please select the following options ***\n", cust.getFirstName());
         Integer response;
         while(true) {
@@ -114,8 +121,9 @@ public class Main {
             
             System.out.print("> ");
             response = sc.nextInt();
+            sc.nextLine();
             if(response == 1) {
-                System.out.println("1");
+                openDepositAccount(cust, sc);
             } else if (response == 2) {
                 System.out.println("2");
             } else if (response == 3) {
@@ -169,5 +177,25 @@ public class Main {
         
         Customer cust = customerSessionBeanRemote.getCustomerAccount(ICNumber);
         return cust;
+    }
+    
+    public static void openDepositAccount(Customer cust, Scanner sc) throws UnknownPersistenceException {
+        String welcomeMessage = String.format("\n*** Create a new Deposit Account for %s ***\n", cust.getFirstName());
+        System.out.println("*** Input Deposit Account Details ***\n\n");
+        
+        System.out.print("Enter your preffered 8 digit Account Number> ");
+        String accNum = sc.nextLine().trim();
+        System.out.println("Pick Account Type: ");
+        System.out.println("1: SAVINGS");
+        System.out.println("2: CURRENT");
+        System.out.print("> ");
+        int accType = sc.nextInt();
+        System.out.print("Provide Cash Deposit> ");
+        BigDecimal cashDeposit = sc.nextBigDecimal();
+        DepositAccount depAccount = new DepositAccount(accNum, DepositAccountType.SAVINGS, cashDeposit, cust);
+        long id = depositAccSessionBeanRemote.createNewAccount(depAccount);
+        System.out.print("\nDeposit Account Created");
+        System.out.print("\nDeposit Account ID = " + id);
+        
     }
 }

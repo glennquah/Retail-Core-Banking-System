@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -31,7 +32,8 @@ public class AtmCard implements Serializable {
     private Boolean enabled;
     private String pin;
     
-    @OneToOne
+    @OneToOne(optional = false)
+    @JoinColumn(nullable = false)
     private Customer customer;
     @OneToMany(mappedBy="AtmCard")
     private List<DepositAccount> listOfDepositAccount;

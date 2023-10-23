@@ -97,13 +97,13 @@ public class MainApp {
                 currentCustomer = createACustomer(sc);
                 String createCustMsg = String.format("\n*** %s's Account Created***\n", currentCustomer.getFirstName());
                 System.out.println(createCustMsg);                  
-                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, currentCustomer);
+                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, currentCustomer);
                 COModule.customerLoginPage();
             } else if (response == 2) {
                 currentCustomer = recurringCust(sc);
                 String foundCustMsg = String.format("\n*** %s's Account found***\n", currentCustomer.getFirstName());
                 System.out.println(foundCustMsg);
-                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, currentCustomer);
+                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, currentCustomer);
                 COModule.customerLoginPage();
             } else if (response == 3) {
                 runApp();

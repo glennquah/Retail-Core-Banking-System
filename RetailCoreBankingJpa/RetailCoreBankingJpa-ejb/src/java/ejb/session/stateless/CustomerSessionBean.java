@@ -5,6 +5,7 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.DepositAccount;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -54,5 +55,18 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
         } catch (NoResultException | NonUniqueResultException ex) {
             throw new CustomerNotFoundException("Customer ID " + icNumber + "does not exist!");
         }
+    }
+    
+    @Override
+    public Customer getListOfDepAccs(Long custID) throws CustomerNotFoundException {
+        Customer cust = em.find(Customer.class, custID);
+        cust.getListOfDepositAccount().size();
+        return cust;
+//        query.setParameter("idNum", custID);
+//        try {
+//            return query.getListOfDepositAccount();
+//        } catch (NoResultException | NonUniqueResultException ex) {
+//            throw new CustomerNotFoundException("Customer ID " + custID + "does not exist!");
+//        }
     }
 }

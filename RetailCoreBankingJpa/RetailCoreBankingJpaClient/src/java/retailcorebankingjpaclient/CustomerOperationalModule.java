@@ -4,14 +4,17 @@
  */
 package retailcorebankingjpaclient;
 
+import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.DepositAccSessionBeanRemote;
 import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javax.ejb.EJB;
 import util.enumeration.DepositAccountType;
+import util.exception.CustomerNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -21,17 +24,19 @@ import util.exception.UnknownPersistenceException;
 public class CustomerOperationalModule {
 
     private DepositAccSessionBeanRemote depositAccSessionBeanRemote;
+    private CustomerSessionBeanRemote customerSessionBeanRemote;
     private Customer currCustomer;
     
     public CustomerOperationalModule() {
     }
     
-    public CustomerOperationalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, Customer currCustomer) {
+    public CustomerOperationalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, Customer currCustomer) {
         this.depositAccSessionBeanRemote = depositAccSessionBeanRemote;
+        this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.currCustomer = currCustomer;
     }
 
-    public void customerLoginPage() throws UnknownPersistenceException {
+    public void customerLoginPage() throws UnknownPersistenceException, CustomerNotFoundException {
             Scanner sc = new Scanner(System.in);
             Integer response;
             while(true) {
@@ -87,7 +92,7 @@ public class CustomerOperationalModule {
         System.out.println("\nDeposit Account ID = " + depId + "\n");
     }
     
-    public void issueAtmCard(Scanner sc) throws UnknownPersistenceException {
+    public void issueAtmCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException {
         String welcomeMessage = String.format("\n*** Issue new Atm Card for %s ***", currCustomer.getFirstName());
         System.out.println(welcomeMessage);
         System.out.println("*** Input Atm Card Details ***\n");
@@ -98,13 +103,36 @@ public class CustomerOperationalModule {
         String nameOnCard = sc.nextLine().trim();
         System.out.print("Enter 6 Digit Pin> ");
         String pin = sc.nextLine().trim();
-        System.out.print("\nSelect 1 or More Deposit Account to be linked:");
-        List<DepositAccount> listOfDepositAccount = currCustomer.getListOfDepositAccount();
+        System.out.println("\nSelect 1 or More Deposit Account to be linked:\n");
+        Customer cust = customerSessionBeanRemote.getListOfDepAccs(currCustomer.getCustomerId());
+        List<DepositAccount> listOfDepositAccount = cust.getListOfDepositAccount();
         for (int i = 0; i < listOfDepositAccount.size(); i++) {
-            String eachAccDetails = String.format("%s: AccountNumber: %s \n Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
+            String eachAccDetails = String.format("%s: AccountNumber: %s \n   Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
             System.out.println(eachAccDetails);
         }
-        System.out.print("\n> ");
-        int option = sc.nextInt();
+        System.out.println("\nKey in Account number to be linked or N to finish selecting");
+        System.out.print("> ");
+        String option = sc.nextLine().trim();
+        List<String> options = new ArrayList<>();
+        options.add(option);
+        while (!option.equals("N")) {
+            System.out.print("> ");
+            option = sc.nextLine();
+            if (!option.equals("N")) {
+                options.add(option);
+            }
+        }
+        
+        System.out.println("\nThis are the accounts u selected: ");
+        for (int i = 0; i < options.size(); i++) {
+            System.out.println("Account " + options.get(i));
+        }
+        
+        System.out.print("Press Y to confirm N to restart> ");
+        if (sc.nextLine().equals("Y")) {
+            System.out.println("LINK");
+        } else {
+            issueAtmCard(sc);
+        }
     }
 }

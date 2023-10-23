@@ -31,7 +31,7 @@ public class DepositAccSessionBean implements DepositAccSessionBeanRemote, Depos
             Customer cust = em.find(Customer.class, custID);
             List<DepositAccount> depAccList = cust.getListOfDepositAccount();
             depAccList.add(newDepAcc);
-            cust.setListOfDepAccount(depAccList);
+            cust.setListOfDepAccount(depAccList);      
             return newDepAcc.getDepositAccountId();
         } catch (PersistenceException exception) {
             throw new UnknownPersistenceException(exception.getMessage());

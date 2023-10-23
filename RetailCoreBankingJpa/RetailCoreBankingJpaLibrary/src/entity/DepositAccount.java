@@ -39,28 +39,35 @@ public class DepositAccount implements Serializable {
     private BigDecimal ledgerBalance;
     private boolean enabled;
     
-    @ManyToOne
-    private Customer customer;
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
+    private Customer customer;
+    
+    @ManyToOne
     private AtmCard atmCard;
+    
     @OneToMany(mappedBy="DepositAccount")
     private List<DepositAccountTransaction> listOfTransactions;
 
     public DepositAccount() {
     }
 
-    public DepositAccount(String accountNumber, DepositAccountType accountType, BigDecimal availableBalance, BigDecimal holdBalance, BigDecimal ledgerBalance, boolean enabled) {
+    public DepositAccount(String accountNumber, DepositAccountType accountType, BigDecimal availableBalance, Customer customer) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.availableBalance = availableBalance;
-        this.holdBalance = holdBalance;
-        this.ledgerBalance = ledgerBalance;
-        this.enabled = enabled;
+        this.holdBalance = BigDecimal.ZERO;
+        this.ledgerBalance = BigDecimal.ZERO;
+        this.enabled = true;
+        this.atmCard = null;
+        this.customer = customer;
+        this.listOfTransactions = null;
     }
     
+    public void setCustomer(Customer cust) {
+        this.customer = cust;
+    }
     
-
     public Long getDepositAccountId() {
         return depositAccountId;
     }

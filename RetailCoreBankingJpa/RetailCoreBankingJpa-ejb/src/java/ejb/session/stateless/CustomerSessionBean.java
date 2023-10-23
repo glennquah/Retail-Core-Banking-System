@@ -44,6 +44,7 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
         return query.getResultList();
     }
     
+    @Override
     public Customer getCustomerAccount(String icNumber) throws CustomerNotFoundException {
         Query query = em.createQuery("SELECT c FROM Customer c WHERE c.identificationNumber = :icNum");
         query.setParameter("icNum", icNumber);

@@ -8,6 +8,7 @@ import ejb.session.stateless.DepositAccSessionBeanRemote;
 import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 import javax.ejb.EJB;
 import util.enumeration.DepositAccountType;
@@ -20,14 +21,14 @@ import util.exception.UnknownPersistenceException;
 public class CustomerOperationalModule {
 
     private DepositAccSessionBeanRemote depositAccSessionBeanRemote;
-    private Customer currentCustomer;
+    private Customer currCustomer;
     
     public CustomerOperationalModule() {
     }
     
     public CustomerOperationalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, Customer currCustomer) {
         this.depositAccSessionBeanRemote = depositAccSessionBeanRemote;
-        this.currentCustomer = currentCustomer;
+        this.currCustomer = currCustomer;
     }
 
     public void customerLoginPage() throws UnknownPersistenceException {
@@ -46,7 +47,7 @@ public class CustomerOperationalModule {
                 response = sc.nextInt();
                 sc.nextLine();
                 if(response == 1) {
-                    openDepositAccount(currentCustomer, sc);
+                    openDepositAccount(sc);
                 } else if (response == 2) {
                     System.out.println("2");
                 } else if (response == 3) {
@@ -65,8 +66,8 @@ public class CustomerOperationalModule {
             }
         }
 
-    public void openDepositAccount(Customer cust, Scanner sc) throws UnknownPersistenceException {
-        String welcomeMessage = String.format("\n*** Create a new Deposit Account for %s ***", cust.getFirstName());
+    public void openDepositAccount(Scanner sc) throws UnknownPersistenceException {
+        String welcomeMessage = String.format("\n*** Create a new Deposit Account for %s ***", currCustomer.getFirstName());
         System.out.println(welcomeMessage);
         System.out.println("*** Input Deposit Account Details ***\n");
         
@@ -79,16 +80,11 @@ public class CustomerOperationalModule {
         int accType = sc.nextInt();
         System.out.print("Provide Cash Deposit> ");
         BigDecimal cashDeposit = sc.nextBigDecimal();
-        DepositAccount depAccount = new DepositAccount(accNum, DepositAccountType.SAVINGS, cashDeposit, cust);
-        if (depAccount == null) {
-            System.out.println("depacc is null");
-        }
-        if (cust == null) {
-            System.out.println("cust is unll");
-        }
-        long id = depositAccSessionBeanRemote.createNewAccount(depAccount, cust);
+        DepositAccount depAccount = new DepositAccount(accNum, DepositAccountType.SAVINGS, cashDeposit, currCustomer);
+        //System.out.println("CURRENT CUSTOMER ID = " + currCustomer.getCustomerId());
+        List<DepositAccount> depAccs = depositAccSessionBeanRemote.createNewAccount(depAccount, currCustomer.getCustomerId());
         System.out.print("\nDeposit Account Created");
-        System.out.print("\nDeposit Account ID = " + id);
+        System.out.print("\nDeposit Account ID = ");
         
     }
 }

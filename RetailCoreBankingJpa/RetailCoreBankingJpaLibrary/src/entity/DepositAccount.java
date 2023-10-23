@@ -39,11 +39,13 @@ public class DepositAccount implements Serializable {
     private BigDecimal ledgerBalance;
     private boolean enabled;
     
-    @ManyToOne
-    private Customer customer;
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
+    private Customer customer;
+    
+    @ManyToOne
     private AtmCard atmCard;
+    
     @OneToMany(mappedBy="DepositAccount")
     private List<DepositAccountTransaction> listOfTransactions;
 

@@ -4,8 +4,10 @@
  */
 package retailcorebankingjpaclient;
 
+import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.DepositAccSessionBeanRemote;
+import entity.AtmCard;
 import entity.Customer;
 import entity.DepositAccount;
 import java.math.BigDecimal;
@@ -25,14 +27,16 @@ public class CustomerOperationalModule {
 
     private DepositAccSessionBeanRemote depositAccSessionBeanRemote;
     private CustomerSessionBeanRemote customerSessionBeanRemote;
+    private AtmCardSessionBeanRemote atmCardSessionBeanRemote;
     private Customer currCustomer;
     
     public CustomerOperationalModule() {
     }
     
-    public CustomerOperationalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, Customer currCustomer) {
+    public CustomerOperationalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, AtmCardSessionBeanRemote atmCardSessionBeanRemote, Customer currCustomer) {
         this.depositAccSessionBeanRemote = depositAccSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
+        this.atmCardSessionBeanRemote = atmCardSessionBeanRemote;
         this.currCustomer = currCustomer;
     }
 
@@ -130,7 +134,15 @@ public class CustomerOperationalModule {
         
         System.out.print("Press Y to confirm N to restart> ");
         if (sc.nextLine().equals("Y")) {
-            System.out.println("LINK");
+            List<DepositAccount> listOfDepAccSelected = new ArrayList<>();
+            for (int i = 0; i < options.size(); i++) {
+                listOfDepAccSelected.add(listOfDepositAccount.get(i));
+            }
+            AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer, listOfDepAccSelected);
+            Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, currCustomer.getCustomerId());
+            System.out.println("\nLinked Successfully!");
+            System.out.println("ATM Card ID = " + atmId);
+            System.out.println("\n");
         } else {
             issueAtmCard(sc);
         }

@@ -64,6 +64,14 @@ public class DepositAccount implements Serializable {
         this.listOfTransactions = null;
     }
     
+    public void setAtmCard(AtmCard card) {
+        this.atmCard = card;
+    }
+    
+//    public void setListOfTransactions(List<DepositAccountTransaction> txList) {
+//        this.listOfTransactions = txList;
+//    }
+    
     public void setCustomer(Customer cust) {
         this.customer = cust;
     }

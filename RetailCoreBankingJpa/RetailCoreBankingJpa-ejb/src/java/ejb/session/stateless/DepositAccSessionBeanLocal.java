@@ -16,5 +16,5 @@ import util.exception.UnknownPersistenceException;
  */
 @Local
 public interface DepositAccSessionBeanLocal {
-    public List<DepositAccount> createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException;
+    public Long createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException;
 }

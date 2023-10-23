@@ -24,7 +24,7 @@ public class DepositAccSessionBean implements DepositAccSessionBeanRemote, Depos
     private EntityManager em;
 
     @Override
-    public List<DepositAccount> createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException {
+    public Long createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException {
         try {
             em.persist(newDepAcc);
             em.flush(); 
@@ -32,7 +32,7 @@ public class DepositAccSessionBean implements DepositAccSessionBeanRemote, Depos
             List<DepositAccount> depAccList = cust.getListOfDepositAccount();
             depAccList.add(newDepAcc);
             cust.setListOfDepAccount(depAccList);
-            return depAccList;
+            return newDepAcc.getDepositAccountId();
         } catch (PersistenceException exception) {
             throw new UnknownPersistenceException(exception.getMessage());
         }

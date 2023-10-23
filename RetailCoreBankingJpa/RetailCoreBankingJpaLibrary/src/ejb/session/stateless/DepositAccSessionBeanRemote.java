@@ -16,5 +16,5 @@ import util.exception.UnknownPersistenceException;
  */
 @Remote
 public interface DepositAccSessionBeanRemote {
-    public List<DepositAccount> createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException;
+    public Long createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException;
 }

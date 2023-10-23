@@ -35,6 +35,7 @@ public class CustomerOperationalModule {
             Scanner sc = new Scanner(System.in);
             Integer response;
             while(true) {
+                System.out.println("Please select the following options \n");
                 System.out.println("1: Open Deposit Account");
                 System.out.println("2: Issue ATM Card");
                 System.out.println("3: Issue Replacement ATM Card");
@@ -49,7 +50,7 @@ public class CustomerOperationalModule {
                 if(response == 1) {
                     openDepositAccount(sc);
                 } else if (response == 2) {
-                    System.out.println("2");
+                    issueAtmCard(sc);
                 } else if (response == 3) {
                     System.out.println("3");
                 } else if (response == 4) {
@@ -81,10 +82,29 @@ public class CustomerOperationalModule {
         System.out.print("Provide Cash Deposit> ");
         BigDecimal cashDeposit = sc.nextBigDecimal();
         DepositAccount depAccount = new DepositAccount(accNum, DepositAccountType.SAVINGS, cashDeposit, currCustomer);
-        //System.out.println("CURRENT CUSTOMER ID = " + currCustomer.getCustomerId());
-        List<DepositAccount> depAccs = depositAccSessionBeanRemote.createNewAccount(depAccount, currCustomer.getCustomerId());
+        Long depId = depositAccSessionBeanRemote.createNewAccount(depAccount, currCustomer.getCustomerId());
         System.out.print("\nDeposit Account Created");
-        System.out.print("\nDeposit Account ID = ");
+        System.out.println("\nDeposit Account ID = " + depId + "\n");
+    }
+    
+    public void issueAtmCard(Scanner sc) throws UnknownPersistenceException {
+        String welcomeMessage = String.format("\n*** Issue new Atm Card for %s ***", currCustomer.getFirstName());
+        System.out.println(welcomeMessage);
+        System.out.println("*** Input Atm Card Details ***\n");
         
+        System.out.print("Enter your preffered 8 digit ATM Number> ");
+        String atmNum = sc.nextLine().trim();
+        System.out.print("Enter preffered Name On Card> ");
+        String nameOnCard = sc.nextLine().trim();
+        System.out.print("Enter 6 Digit Pin> ");
+        String pin = sc.nextLine().trim();
+        System.out.print("\nSelect 1 or More Deposit Account to be linked:");
+        List<DepositAccount> listOfDepositAccount = currCustomer.getListOfDepositAccount();
+        for (int i = 0; i < listOfDepositAccount.size(); i++) {
+            String eachAccDetails = String.format("%s: AccountNumber: %s \n Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
+            System.out.println(eachAccDetails);
+        }
+        System.out.print("\n> ");
+        int option = sc.nextInt();
     }
 }

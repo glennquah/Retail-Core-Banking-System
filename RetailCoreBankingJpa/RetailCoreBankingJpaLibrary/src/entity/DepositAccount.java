@@ -56,8 +56,8 @@ public class DepositAccount implements Serializable {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.availableBalance = availableBalance;
-        this.holdBalance = availableBalance;
-        this.ledgerBalance = availableBalance;
+        this.holdBalance = BigDecimal.ZERO;
+        this.ledgerBalance = BigDecimal.ZERO;
         this.enabled = true;
         this.atmCard = null;
         this.customer = customer;

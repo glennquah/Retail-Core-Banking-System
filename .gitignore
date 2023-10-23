@@ -18,6 +18,7 @@
 *.zip
 *.tar.gz
 *.rar
+*.xml
 
 # User defined
 nbproject/private/

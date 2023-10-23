@@ -127,18 +127,20 @@ public class CustomerOperationalModule {
             }
         }
         
-        System.out.println("\nThis are the accounts u selected: ");
+        System.out.println("\nThis are the accounts u selected to link: ");
         for (int i = 0; i < options.size(); i++) {
             System.out.println("Account " + options.get(i));
         }
         
-        System.out.print("Press Y to confirm N to restart> ");
+        System.out.print("Press Y to confirm Linking and N to restart> ");
         if (sc.nextLine().equals("Y")) {
             List<DepositAccount> listOfDepAccSelected = new ArrayList<>();
             for (int i = 0; i < options.size(); i++) {
                 listOfDepAccSelected.add(listOfDepositAccount.get(i));
             }
             AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer, listOfDepAccSelected);
+            //add stop when they selected all
+            //come up with error statement if they picked a deposit account that already has an ATM
             Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, currCustomer.getCustomerId());
             System.out.println("\nLinked Successfully!");
             System.out.println("ATM Card ID = " + atmId);

@@ -59,6 +59,7 @@ public class CustomerSessionBean implements CustomerSessionBeanRemote, CustomerS
     
     @Override
     public Customer getListOfDepAccs(Long custID) throws CustomerNotFoundException {
+        //add null exception when deposit acc is not made!!!
         Customer cust = em.find(Customer.class, custID);
         cust.getListOfDepositAccount().size();
         return cust;

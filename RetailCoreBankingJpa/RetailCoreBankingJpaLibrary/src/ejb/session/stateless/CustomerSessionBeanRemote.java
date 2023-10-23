@@ -5,6 +5,7 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.DepositAccount;
 import java.util.List;
 import javax.ejb.Remote;
 import util.exception.CustomerNotFoundException;
@@ -19,4 +20,5 @@ public interface CustomerSessionBeanRemote {
     public Long createNewAccount(Customer newAccount) throws UnknownPersistenceException;
     public List<Customer> retrieveAllAccounts();
     public Customer getCustomerAccount(String icNumber) throws CustomerNotFoundException;
+    public Customer getListOfDepAccs(Long custID) throws CustomerNotFoundException;
 }

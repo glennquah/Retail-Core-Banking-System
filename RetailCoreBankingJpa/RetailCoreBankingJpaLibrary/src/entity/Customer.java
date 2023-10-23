@@ -34,7 +34,7 @@ public class Customer implements Serializable {
     private String addressLine2;
     private String postalCode;
     
-    @OneToOne
+    @OneToOne (mappedBy="customer")
     private AtmCard atmCard;
     @OneToMany(mappedBy="customer")
     private List<DepositAccount> listOfDepositAccount;
@@ -52,6 +52,10 @@ public class Customer implements Serializable {
         this.postalCode = postalCode;
         this.atmCard = null;
         this.listOfDepositAccount = null;
+    }
+    
+    public void setAtmCard(AtmCard card) {
+        this.atmCard = card;
     }
     
     public void setListOfDepAccount(List<DepositAccount> listOfDepAccount) {

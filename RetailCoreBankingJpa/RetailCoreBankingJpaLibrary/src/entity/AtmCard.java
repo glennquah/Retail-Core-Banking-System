@@ -42,11 +42,13 @@ public class AtmCard implements Serializable {
     public AtmCard() {
     }
 
-    public AtmCard(String cardNumber, String nameOnCard, Boolean enabled, String pin) {
+    public AtmCard(String cardNumber, String nameOnCard, Boolean enabled, String pin, Customer customer, List<DepositAccount> listOfDepositAccount) {
         this.cardNumber = cardNumber;
         this.nameOnCard = nameOnCard;
         this.enabled = enabled;
         this.pin = pin;
+        this.customer = customer;
+        this.listOfDepositAccount = listOfDepositAccount;
     }
     
     public Long getAtmCardId() {

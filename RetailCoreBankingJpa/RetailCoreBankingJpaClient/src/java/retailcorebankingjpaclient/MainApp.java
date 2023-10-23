@@ -4,6 +4,7 @@
  */
 package retailcorebankingjpaclient;
 
+import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.DepositAccSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
@@ -28,6 +29,7 @@ public class MainApp {
     private DepositAccSessionBeanRemote depositAccSessionBeanRemote;
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private EmployeeSessionBeanRemote employeeSessionBeanRemote;
+    private AtmCardSessionBeanRemote atmCardSessionBeanRemote;
     private CustomerOperationalModule COModule;
     private Employee currentEmployee;
     private Customer currentCustomer;
@@ -35,10 +37,11 @@ public class MainApp {
     public MainApp() {
     }
     
-    public MainApp(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote) {
+    public MainApp(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, EmployeeSessionBeanRemote employeeSessionBeanRemote, AtmCardSessionBeanRemote atmCardSessionBeanRemote) {
         this.depositAccSessionBeanRemote = depositAccSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.employeeSessionBeanRemote = employeeSessionBeanRemote;
+        this.atmCardSessionBeanRemote = atmCardSessionBeanRemote;
     }
         
     public void runApp() throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {
@@ -97,13 +100,13 @@ public class MainApp {
                 currentCustomer = createACustomer(sc);
                 String createCustMsg = String.format("\n*** %s's Account Created***\n", currentCustomer.getFirstName());
                 System.out.println(createCustMsg);                  
-                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, currentCustomer);
+                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
                 COModule.customerLoginPage();
             } else if (response == 2) {
                 currentCustomer = recurringCust(sc);
                 String foundCustMsg = String.format("\n*** %s's Account found***\n", currentCustomer.getFirstName());
                 System.out.println(foundCustMsg);
-                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, currentCustomer);
+                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
                 COModule.customerLoginPage();
             } else if (response == 3) {
                 runApp();
@@ -119,7 +122,7 @@ public class MainApp {
         
         System.out.print("Enter Customer First Name> ");
         String firstName = sc.nextLine().trim();
-        System.out.print("Enter Customer Mid Name> ");
+        System.out.print("Enter Customer Last Name> ");
         String lastName = sc.nextLine().trim();
         System.out.print("Enter Customer Identification Number> ");
         String ICNumber = sc.nextLine().trim();

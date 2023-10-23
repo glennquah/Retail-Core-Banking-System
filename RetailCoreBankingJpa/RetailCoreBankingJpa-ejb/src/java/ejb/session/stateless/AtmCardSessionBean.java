@@ -4,6 +4,7 @@
  */
 package ejb.session.stateless;
 
+import entity.AtmCard;
 import entity.Customer;
 import entity.DepositAccount;
 import java.util.List;
@@ -18,23 +19,23 @@ import util.exception.UnknownPersistenceException;
  * @author Lenovo
  */
 @Stateless
-public class DepositAccSessionBean implements DepositAccSessionBeanRemote, DepositAccSessionBeanLocal {
+public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailCoreBankingJpa-ejbPU")
     private EntityManager em;
 
     @Override
-    public Long createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException {
+    public Long createAtmCard(AtmCard newAtmCard, Long custID) throws UnknownPersistenceException {
         try {
-            em.persist(newDepAcc);
+            em.persist(newAtmCard);
             em.flush(); 
             Customer cust = em.find(Customer.class, custID);
-            List<DepositAccount> depAccList = cust.getListOfDepositAccount();
-            depAccList.add(newDepAcc);
-            cust.setListOfDepAccount(depAccList);      
-            return newDepAcc.getDepositAccountId();
+            List<DepositAccount> depAccs = cust.getListOfDepositAccount();
+            cust.setAtmCard(newAtmCard);      
+            return newAtmCard.getAtmCardId();
         } catch (PersistenceException exception) {
             throw new UnknownPersistenceException(exception.getMessage());
         }
     }
+    
 }

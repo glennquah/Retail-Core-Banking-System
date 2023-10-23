@@ -4,6 +4,7 @@
  */
 package retailcorebankingjpaclient;
 
+import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.DepositAccSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
@@ -26,6 +27,9 @@ import util.exception.UnknownPersistenceException;
 public class Main {
 
     @EJB
+    private static AtmCardSessionBeanRemote atmCardSessionBeanRemote;
+
+    @EJB
     private static DepositAccSessionBeanRemote depositAccSessionBeanRemote;
 
     @EJB
@@ -35,8 +39,10 @@ public class Main {
     private static EmployeeSessionBeanRemote employeeSessionBeanRemote;
     
     
+    
+    
     public static void main(String[] args) throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {
-        MainApp mainApp = new MainApp(depositAccSessionBeanRemote, customerSessionBeanRemote, employeeSessionBeanRemote);
+        MainApp mainApp = new MainApp(depositAccSessionBeanRemote, customerSessionBeanRemote, employeeSessionBeanRemote, atmCardSessionBeanRemote);
         mainApp.runApp();
     }
 }

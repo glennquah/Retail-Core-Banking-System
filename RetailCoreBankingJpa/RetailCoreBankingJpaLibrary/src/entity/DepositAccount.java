@@ -62,6 +62,10 @@ public class DepositAccount implements Serializable {
         this.listOfTransactions = null;
     }
     
+    public void setCustomer(Customer cust) {
+        this.customer = cust;
+    }
+    
     public Long getDepositAccountId() {
         return depositAccountId;
     }

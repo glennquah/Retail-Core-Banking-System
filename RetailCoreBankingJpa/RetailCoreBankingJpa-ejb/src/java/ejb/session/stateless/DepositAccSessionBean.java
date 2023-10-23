@@ -4,6 +4,7 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.DepositAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -22,8 +23,10 @@ public class DepositAccSessionBean implements DepositAccSessionBeanRemote, Depos
     private EntityManager em;
 
     @Override
-    public Long createNewAccount(DepositAccount newDepAcc) throws UnknownPersistenceException {
+    public Long createNewAccount(DepositAccount newDepAcc, Customer cust) throws UnknownPersistenceException {
         try {
+            newDepAcc.setCustomer(cust);
+            //cust.getListOfDepositAccount().add(newDepAcc);
             em.persist(newDepAcc);
             em.flush(); 
             return newDepAcc.getDepositAccountId();

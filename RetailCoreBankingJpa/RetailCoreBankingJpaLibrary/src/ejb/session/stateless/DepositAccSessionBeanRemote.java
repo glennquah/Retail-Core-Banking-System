@@ -4,6 +4,7 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.DepositAccount;
 import javax.ejb.Remote;
 import util.exception.UnknownPersistenceException;
@@ -14,5 +15,5 @@ import util.exception.UnknownPersistenceException;
  */
 @Remote
 public interface DepositAccSessionBeanRemote {
-    public Long createNewAccount(DepositAccount newDepAcc) throws UnknownPersistenceException;
+    public Long createNewAccount(DepositAccount newDepAcc, Customer cust) throws UnknownPersistenceException;
 }

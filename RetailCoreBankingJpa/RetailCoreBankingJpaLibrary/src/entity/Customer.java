@@ -53,6 +53,14 @@ public class Customer implements Serializable {
         this.atmCard = null;
         this.listOfDepositAccount = null;
     }
+
+    public AtmCard getAtmCard() {
+        return atmCard;
+    }
+
+    public List<DepositAccount> getListOfDepositAccount() {
+        return listOfDepositAccount;
+    }
     
     public void openDepAccount(DepositAccount depAcc) {
         this.listOfDepositAccount.add(depAcc);

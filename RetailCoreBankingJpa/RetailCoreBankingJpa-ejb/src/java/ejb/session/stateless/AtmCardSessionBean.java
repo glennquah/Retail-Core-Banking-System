@@ -61,6 +61,15 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     }
     
     @Override
+    public List<DepositAccount> getListOfDepositAccounts(AtmCard atmCard) {
+        Customer cust = atmCard.getCustomer();
+        Query query = em.createQuery("SELECT c FROM DepositAccount c WHERE c.customer = :customer");
+        query.setParameter("customer", cust);
+        List<DepositAccount> listOfDepositAccounts = (List<DepositAccount>)query.getResultList();
+        return listOfDepositAccounts;
+    }
+    
+    @Override
     public AtmCard getAtmCard(Long custID) throws UnknownPersistenceException {
         try {
             Customer cust = em.find(Customer.class, custID);

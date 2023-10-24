@@ -107,40 +107,17 @@ public class CustomerOperationalModule {
         String nameOnCard = sc.nextLine().trim();
         System.out.print("Enter 6 Digit Pin> ");
         String pin = sc.nextLine().trim();
-        System.out.println("\nSelect 1 or More Deposit Account to be linked:\n");
+        System.out.println("\nAccounts to be linked:\n");
         Customer cust = customerSessionBeanRemote.getListOfDepAccs(currCustomer.getCustomerId());
         List<DepositAccount> listOfDepositAccount = cust.getListOfDepositAccount();
         for (int i = 0; i < listOfDepositAccount.size(); i++) {
             String eachAccDetails = String.format("%s: AccountNumber: %s \n   Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
             System.out.println(eachAccDetails);
         }
-        System.out.println("\nKey in Account number to be linked or N to finish selecting");
-        System.out.print("> ");
-        String option = sc.nextLine().trim();
-        List<String> options = new ArrayList<>();
-        options.add(option);
-        int count = 1;
-        while (!option.equals("N") && count != listOfDepositAccount.size()) {
-            System.out.print("> ");
-            option = sc.nextLine();
-            if (!option.equals("N")) {
-                options.add(option);
-            }
-            count++;
-        }   
-        
-        System.out.println("\nThis are " + count + " accounts u selected to link: ");
-        for (int i = 0; i < options.size(); i++) {
-            System.out.println("Account " + options.get(i));
-        }
         
         System.out.print("Press Y to confirm Linking and N to restart> ");
         if (sc.nextLine().equals("Y")) {
-            List<DepositAccount> listOfDepAccSelected = new ArrayList<>();
-            for (int i = 0; i < options.size(); i++) {
-                listOfDepAccSelected.add(listOfDepositAccount.get(i));
-            }
-            AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer, listOfDepAccSelected);
+            AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer);
             //add stop when they selected all
             //come up with error statement if they picked a deposit account that already has an ATM
             Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, currCustomer.getCustomerId());

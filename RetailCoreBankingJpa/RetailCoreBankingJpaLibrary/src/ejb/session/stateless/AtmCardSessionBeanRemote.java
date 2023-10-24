@@ -17,4 +17,5 @@ import util.exception.UnknownPersistenceException;
 @Remote
 public interface AtmCardSessionBeanRemote {
     public Long createAtmCard(AtmCard newAtmCard, Long custID) throws UnknownPersistenceException;
+    public AtmCard getAtmCard(Long custID) throws UnknownPersistenceException;
 }

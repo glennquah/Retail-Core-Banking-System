@@ -8,6 +8,7 @@ import entity.AtmCard;
 import entity.DepositAccount;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -18,4 +19,6 @@ import util.exception.UnknownPersistenceException;
 public interface AtmCardSessionBeanLocal {
     public Long createAtmCard(AtmCard newAtmCard, Long custID) throws UnknownPersistenceException;
     public AtmCard getAtmCard(Long custID) throws UnknownPersistenceException;
+    public AtmCard retrieveAtmCardByAtmNum(String atmNum);
+    public AtmCard insertCard(String atmNum, String pinNum) throws InvalidLoginCredentialException;
 }

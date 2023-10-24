@@ -8,6 +8,7 @@ import ejb.session.stateless.AtmCardSessionBeanRemote;
 import ejb.session.stateless.CustomerSessionBeanRemote;
 import ejb.session.stateless.DepositAccSessionBeanRemote;
 import ejb.session.stateless.EmployeeSessionBeanRemote;
+import entity.AtmCard;
 import entity.Customer;
 import entity.DepositAccount;
 import entity.Employee;
@@ -49,8 +50,9 @@ public class MainApp {
         Integer response;
 
         System.out.println("*** Welcome to Retail Core Banking System ***\n");            
-        System.out.println("1: Login");
-        System.out.println("2: Exit\n");
+        System.out.println("1: Login to Teller Terminal");
+        System.out.println("2: Insert Card");
+        System.out.println("3: Exit\n");
         while(true) {
             System.out.print("> ");
             response = sc.nextInt();
@@ -58,12 +60,38 @@ public class MainApp {
             if(response == 1) {
                 login(sc);
             } else if (response == 2) {
+                insertCard(sc);
+            } else if (response == 3) {
                 System.out.println("Exited");
                 break;
             } else {
                 System.out.print("Invalid option, please try again!\n");                
             }
         }
+    }
+    
+        
+    public void insertCard(Scanner sc) throws InvalidLoginCredentialException {
+        System.out.println("\n*** Please Insert your Card ***");
+        System.out.println("*** Input ATM card Details ***\n");
+        System.out.print("Enter ATM Card Number> ");
+        String atmNum = sc.nextLine().trim();
+        System.out.print("Enter PIN> ");
+        String pinNum = sc.nextLine().trim();
+        
+        if(atmNum.length() > 0 && pinNum.length() > 0) {
+            AtmCard atm = atmCardSessionBeanRemote.insertCard(atmNum, pinNum);
+            System.out.println("*** ATM Card Credential Correct! ***");
+            insertCardPage(sc, atm);
+        } else {
+            throw new InvalidLoginCredentialException("Missing login credential!");
+        }
+    }
+    
+    public void insertCardPage(Scanner sc, AtmCard atm) {
+        System.out.println("Please select the following options \n");
+        System.out.println("1: Change PIN");
+        System.out.println("2: Enquire Available Balance");
     }
     
     public void login(Scanner sc) throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {

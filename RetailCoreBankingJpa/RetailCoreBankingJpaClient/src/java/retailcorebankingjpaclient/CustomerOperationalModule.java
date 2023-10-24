@@ -119,15 +119,17 @@ public class CustomerOperationalModule {
         String option = sc.nextLine().trim();
         List<String> options = new ArrayList<>();
         options.add(option);
-        while (!option.equals("N")) {
+        int count = 1;
+        while (!option.equals("N") && count != listOfDepositAccount.size()) {
             System.out.print("> ");
             option = sc.nextLine();
             if (!option.equals("N")) {
                 options.add(option);
             }
-        }
+            count++;
+        }   
         
-        System.out.println("\nThis are the accounts u selected to link: ");
+        System.out.println("\nThis are " + count + " accounts u selected to link: ");
         for (int i = 0; i < options.size(); i++) {
             System.out.println("Account " + options.get(i));
         }

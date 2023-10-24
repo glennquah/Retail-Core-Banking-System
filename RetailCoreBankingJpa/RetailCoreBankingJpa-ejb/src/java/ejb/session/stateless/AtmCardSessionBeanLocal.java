@@ -21,4 +21,5 @@ public interface AtmCardSessionBeanLocal {
     public AtmCard getAtmCard(Long custID) throws UnknownPersistenceException;
     public AtmCard retrieveAtmCardByAtmNum(String atmNum);
     public AtmCard insertCard(String atmNum, String pinNum) throws InvalidLoginCredentialException;
+    public List<DepositAccount> getListOfDepositAccounts(AtmCard atmCard);
 }

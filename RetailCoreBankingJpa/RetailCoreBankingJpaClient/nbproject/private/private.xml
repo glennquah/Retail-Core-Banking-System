@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpaClient/src/java/retailcorebankingjpaclient/TellerTerminalModule.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpaClient/src/java/retailcorebankingjpaclient/Main.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpaClient/src/java/retailcorebankingjpaclient/MainApp.java</file>
-            <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpaClient/src/java/retailcorebankingjpaclient/CustomerOperationalModule.java</file>
+            <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpaClient/src/java/retailcorebankingjpaclient/AutomatedTellerModule.java</file>
         </group>
     </open-files>
 </project-private>

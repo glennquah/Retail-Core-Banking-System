@@ -31,7 +31,9 @@ public class MainApp {
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private EmployeeSessionBeanRemote employeeSessionBeanRemote;
     private AtmCardSessionBeanRemote atmCardSessionBeanRemote;
-    private CustomerOperationalModule COModule;
+    private TellerTerminalModule TellerMod;
+    private AutomatedTellerModule AutModule;
+    
     private Employee currentEmployee;
     private Customer currentCustomer;
     
@@ -81,18 +83,15 @@ public class MainApp {
         
         if(atmNum.length() > 0 && pinNum.length() > 0) {
             AtmCard atm = atmCardSessionBeanRemote.insertCard(atmNum, pinNum);
+            AutModule = new AutomatedTellerModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, atm);
             System.out.println("*** ATM Card Credential Correct! ***");
-            insertCardPage(sc, atm);
+            AutModule.insertCardPage(sc);
         } else {
             throw new InvalidLoginCredentialException("Missing login credential!");
         }
     }
     
-    public void insertCardPage(Scanner sc, AtmCard atm) {
-        System.out.println("Please select the following options \n");
-        System.out.println("1: Change PIN");
-        System.out.println("2: Enquire Available Balance");
-    }
+
     
     public void login(Scanner sc) throws InvalidLoginCredentialException, UnknownPersistenceException, CustomerNotFoundException {
         System.out.println("\n*** Retail Core Banking System :: Login ***\n");
@@ -128,14 +127,14 @@ public class MainApp {
                 currentCustomer = createACustomer(sc);
                 String createCustMsg = String.format("\n*** %s's Account Created***\n", currentCustomer.getFirstName());
                 System.out.println(createCustMsg);                  
-                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
-                COModule.customerLoginPage();
+                TellerMod = new TellerTerminalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
+                TellerMod.customerLoginPage();
             } else if (response == 2) {
                 currentCustomer = recurringCust(sc);
                 String foundCustMsg = String.format("\n*** %s's Account found***\n", currentCustomer.getFirstName());
                 System.out.println(foundCustMsg);
-                COModule = new CustomerOperationalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
-                COModule.customerLoginPage();
+                TellerMod = new TellerTerminalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
+                TellerMod.customerLoginPage();
             } else if (response == 3) {
                 runApp();
             } else {

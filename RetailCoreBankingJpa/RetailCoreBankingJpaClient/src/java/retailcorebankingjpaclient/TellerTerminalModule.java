@@ -24,17 +24,17 @@ import util.exception.UnknownPersistenceException;
  *
  * @author Lenovo
  */
-public class CustomerOperationalModule {
+public class TellerTerminalModule {
 
     private DepositAccSessionBeanRemote depositAccSessionBeanRemote;
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private AtmCardSessionBeanRemote atmCardSessionBeanRemote;
     private Customer currCustomer;
     
-    public CustomerOperationalModule() {
+    public TellerTerminalModule() {
     }
     
-    public CustomerOperationalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, AtmCardSessionBeanRemote atmCardSessionBeanRemote, Customer currCustomer) {
+    public TellerTerminalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, AtmCardSessionBeanRemote atmCardSessionBeanRemote, Customer currCustomer) {
         this.depositAccSessionBeanRemote = depositAccSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.atmCardSessionBeanRemote = atmCardSessionBeanRemote;

@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/singleton/DataInitSessionBean.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/AtmCardSessionBeanLocal.java</file>
+            <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/setup/glassfish-resources.xml</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/AtmCardSessionBean.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/java/ejb/session/stateless/EmployeeSessionBean.java</file>
             <file>file:/C:/NetBeansProjects/Retail-Core-Banking-System-git/RetailCoreBankingJpa/RetailCoreBankingJpa-ejb/src/conf/MANIFEST.MF</file>

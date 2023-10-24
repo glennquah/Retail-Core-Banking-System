@@ -15,9 +15,37 @@
                     <file>${reference.RetailCoreBankingJpaClient.j2ee-module-car}</file>
                     <path-in-war>/</path-in-war>
                 </library>
+                <library>
+                    <file>${reference.AutomatedTellerMachineClient.j2ee-module-car}</file>
+                    <path-in-war>/</path-in-war>
+                </library>
+                <library>
+                    <file>${reference.TellerTerminalClient.j2ee-module-car}</file>
+                    <path-in-war>/</path-in-war>
+                </library>
+                <library>
+                    <file>${reference.AutomatedTellerMachineClient-1.j2ee-module-car}</file>
+                    <path-in-war>/</path-in-war>
+                </library>
             </web-module-additional-libraries>
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
+            <reference>
+                <foreign-project>AutomatedTellerMachineClient</foreign-project>
+                <artifact-type>j2ee_ear_archive</artifact-type>
+                <script>build.xml</script>
+                <target>dist-ear</target>
+                <clean-target>clean-ear</clean-target>
+                <id>j2ee-module-car</id>
+            </reference>
+            <reference>
+                <foreign-project>AutomatedTellerMachineClient-1</foreign-project>
+                <artifact-type>j2ee_ear_archive</artifact-type>
+                <script>build.xml</script>
+                <target>dist-ear</target>
+                <clean-target>clean-ear</clean-target>
+                <id>j2ee-module-car</id>
+            </reference>
             <reference>
                 <foreign-project>RetailCoreBankingJpa-ejb</foreign-project>
                 <artifact-type>j2ee_ear_archive</artifact-type>
@@ -28,6 +56,14 @@
             </reference>
             <reference>
                 <foreign-project>RetailCoreBankingJpaClient</foreign-project>
+                <artifact-type>j2ee_ear_archive</artifact-type>
+                <script>build.xml</script>
+                <target>dist-ear</target>
+                <clean-target>clean-ear</clean-target>
+                <id>j2ee-module-car</id>
+            </reference>
+            <reference>
+                <foreign-project>TellerTerminalClient</foreign-project>
                 <artifact-type>j2ee_ear_archive</artifact-type>
                 <script>build.xml</script>
                 <target>dist-ear</target>

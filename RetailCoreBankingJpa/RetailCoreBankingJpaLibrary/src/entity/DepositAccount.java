@@ -7,6 +7,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,6 +43,7 @@ public class DepositAccount implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Customer customer;
+
     
     @ManyToOne
     private AtmCard atmCard;

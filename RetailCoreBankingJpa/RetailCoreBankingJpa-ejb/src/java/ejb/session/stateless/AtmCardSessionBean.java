@@ -61,6 +61,13 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     }
     
     @Override
+    public Long changeAtmPin(String newPin, String AtmNum) {
+        AtmCard atm = retrieveAtmCardByAtmNum(AtmNum);
+        atm.setPin(newPin);
+        return atm.getAtmCardId();
+    }
+    
+    @Override
     public List<DepositAccount> getListOfDepositAccounts(AtmCard atmCard) {
         Customer cust = atmCard.getCustomer();
         Query query = em.createQuery("SELECT c FROM DepositAccount c WHERE c.customer = :customer");

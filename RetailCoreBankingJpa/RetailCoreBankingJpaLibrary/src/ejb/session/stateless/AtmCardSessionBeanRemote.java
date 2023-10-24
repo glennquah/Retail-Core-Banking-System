@@ -22,4 +22,5 @@ public interface AtmCardSessionBeanRemote {
     public AtmCard retrieveAtmCardByAtmNum(String atmNum);
     public AtmCard insertCard(String atmNum, String pinNum) throws InvalidLoginCredentialException;
     public List<DepositAccount> getListOfDepositAccounts(AtmCard atmCard);
+    public Long changeAtmPin(String newPin, String AtmNum);
 }

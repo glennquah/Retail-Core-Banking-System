@@ -36,17 +36,17 @@ public class AutomatedTellerModule {
     }
     
     public void insertCardPage(Scanner sc) {
-        System.out.println("\nPlease select the following options \n");
-        System.out.println("1: Change PIN");
-        System.out.println("2: Enquire Available Balance");
-        System.out.println("3: Log Out");
-        Integer response;
         while(true) {
+            System.out.println("\nPlease select the following options \n");
+            System.out.println("1: Change PIN");
+            System.out.println("2: Enquire Available Balance");
+            System.out.println("3: Log Out");
+            Integer response;
             System.out.print("> ");
             response = sc.nextInt();
             sc.nextLine();
             if(response == 1) {
-                System.out.println("Change Pin");
+                changePin(sc);
             } else if (response == 2) {
                 enquireBalance(sc);
             } else if (response == 3) {
@@ -55,6 +55,18 @@ public class AutomatedTellerModule {
             } else {
                 System.out.print("Invalid option, please try again!\n");                
             }
+        }
+    }
+    
+    public void changePin(Scanner sc) {
+        System.out.println("\n*** Changing of Pin ***");
+        System.out.print("Input New 6 Digit Pin Number> ");
+        String newPinNum = sc.nextLine().trim();
+        System.out.print("Key in Y to confirm N to go back> ");
+        if (sc.nextLine().trim().equals("Y")) {
+            atmCardSessionBeanRemote.changeAtmPin(newPinNum, this.atmCard.getCardNumber());
+        } else {
+            insertCardPage(sc);
         }
     }
     

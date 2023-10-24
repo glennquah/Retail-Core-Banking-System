@@ -6,6 +6,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Customer implements Serializable {
     
     @OneToOne (mappedBy="customer")
     private AtmCard atmCard;
-    @OneToMany(mappedBy="customer")
+    @OneToMany(mappedBy="customer", cascade = CascadeType.PERSIST)
     private List<DepositAccount> listOfDepositAccount;
 
     public Customer() {

@@ -7,12 +7,17 @@ package ejb.session.stateless;
 import entity.AtmCard;
 import entity.Customer;
 import entity.DepositAccount;
+import entity.Employee;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.EmployeeNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -62,6 +67,26 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
             return cust.getAtmCard();
         } catch (PersistenceException exception) {
             throw new UnknownPersistenceException(exception.getMessage());
+        }
+    }
+    
+    @Override
+    public AtmCard retrieveAtmCardByAtmNum(String atmNum) {
+        Query query = em.createQuery("SELECT e FROM AtmCard e WHERE e.cardNumber = :inCardNumber");
+        query.setParameter("inCardNumber", atmNum);
+        return (AtmCard)query.getSingleResult();
+         
+    }
+    
+    @Override
+    public AtmCard insertCard(String atmNum, String pinNum) throws InvalidLoginCredentialException {
+        AtmCard atm = retrieveAtmCardByAtmNum(atmNum);
+
+        if(atm.getPin().equals(pinNum)){    
+            return atm;
+        }
+        else {
+            throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
     }
 }

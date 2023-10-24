@@ -17,6 +17,7 @@ import java.util.Scanner;
 import javax.ejb.EJB;
 import util.enumeration.DepositAccountType;
 import util.exception.CustomerNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -40,7 +41,7 @@ public class CustomerOperationalModule {
         this.currCustomer = currCustomer;
     }
 
-    public void customerLoginPage() throws UnknownPersistenceException, CustomerNotFoundException {
+    public void customerLoginPage() throws UnknownPersistenceException, CustomerNotFoundException, InvalidLoginCredentialException {
             Scanner sc = new Scanner(System.in);
             Integer response;
             while(true) {
@@ -48,10 +49,7 @@ public class CustomerOperationalModule {
                 System.out.println("1: Open Deposit Account");
                 System.out.println("2: Issue ATM Card");
                 System.out.println("3: Issue Replacement ATM Card");
-                System.out.println("4: Insert ATM Card");
-                System.out.println("5: Change PIN");
-                System.out.println("6: Enquire Available Balance");
-                System.out.println("7: back\n");
+                System.out.println("4: back\n");
 
                 System.out.print("> ");
                 response = sc.nextInt();
@@ -63,12 +61,6 @@ public class CustomerOperationalModule {
                 } else if (response == 3) {
                     issueReplacementCard(sc);
                 } else if (response == 4) {
-                    System.out.println("4");
-                } else if (response == 5) {
-                    System.out.println("5");
-                } else if (response == 6) {
-                    System.out.println("6");
-                } else if (response == 7) {
                     break;
                 } else {
                     System.out.println("Invalid option, please try again!\n");
@@ -129,7 +121,7 @@ public class CustomerOperationalModule {
         }
     }
     
-    public void issueReplacementCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException {
+    public void issueReplacementCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException, InvalidLoginCredentialException {
         String welcomeMessage = String.format("\n*** Issue Replacement Atm Card for %s ***", currCustomer.getFirstName());
         System.out.println(welcomeMessage);
         AtmCard prevAtmC = atmCardSessionBeanRemote.getAtmCard(currCustomer.getCustomerId());

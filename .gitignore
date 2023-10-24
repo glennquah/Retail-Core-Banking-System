@@ -43,3 +43,7 @@ EnterpriseApplication1Library/dist/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/AutomatedTellerMachineClient/nbproject/private/
+/RetailCoreBankingJpa/AutomatedTellerMachineClient/nbproject/private/
+/RetailCoreBankingJpa/abc/nbproject/private/
+/temp/nbproject/private/

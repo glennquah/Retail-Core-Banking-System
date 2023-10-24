@@ -55,4 +55,13 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
         }
     }
     
+    @Override
+    public AtmCard getAtmCard(Long custID) throws UnknownPersistenceException {
+        try {
+            Customer cust = em.find(Customer.class, custID);
+            return cust.getAtmCard();
+        } catch (PersistenceException exception) {
+            throw new UnknownPersistenceException(exception.getMessage());
+        }
+    }
 }

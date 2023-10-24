@@ -61,7 +61,7 @@ public class CustomerOperationalModule {
                 } else if (response == 2) {
                     issueAtmCard(sc);
                 } else if (response == 3) {
-                    System.out.println("3");
+                    issueReplacementCard(sc);
                 } else if (response == 4) {
                     System.out.println("4");
                 } else if (response == 5) {
@@ -126,6 +126,48 @@ public class CustomerOperationalModule {
             System.out.println("\n");
         } else {
             issueAtmCard(sc);
+        }
+    }
+    
+    public void issueReplacementCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException {
+        String welcomeMessage = String.format("\n*** Issue Replacement Atm Card for %s ***", currCustomer.getFirstName());
+        System.out.println(welcomeMessage);
+        AtmCard prevAtmC = atmCardSessionBeanRemote.getAtmCard(currCustomer.getCustomerId());
+        System.out.print("Replace ATM Card: ");
+        System.out.println(prevAtmC.getCardNumber());
+        System.out.print("Name: ");
+        System.out.println(prevAtmC.getNameOnCard());
+        System.out.println("Press Y to confirm Replacement and N to go back> ");
+        if (sc.nextLine().equals("Y")) {               
+            System.out.println("*** Input New Atm Card Details ***\n");
+            System.out.print("Enter your preffered 8 digit ATM Number> ");
+            String atmNum = sc.nextLine().trim();
+            System.out.print("Enter preffered Name On Card> ");
+            String nameOnCard = sc.nextLine().trim();
+            System.out.print("Enter 6 Digit Pin> ");
+            String pin = sc.nextLine().trim();
+            System.out.println("\nAccounts to be linked:\n");
+            Customer cust = customerSessionBeanRemote.getListOfDepAccs(currCustomer.getCustomerId());
+            List<DepositAccount> listOfDepositAccount = cust.getListOfDepositAccount();
+            for (int i = 0; i < listOfDepositAccount.size(); i++) {
+                String eachAccDetails = String.format("%s: AccountNumber: %s \n   Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
+                System.out.println(eachAccDetails);
+            }
+
+            System.out.print("Press Y to confirm Linking and N to restart> ");
+            if (sc.nextLine().equals("Y")) {
+                AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer);
+                //add stop when they selected all
+                //come up with error statement if they picked a deposit account that already has an ATM
+                Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, currCustomer.getCustomerId());
+                System.out.println("\nLinked Successfully!");
+                System.out.println("ATM Card ID = " + atmId);
+                System.out.println("\n");
+            } else {
+                issueReplacementCard(sc);
+            }
+        } else {
+            customerLoginPage();
         }
     }
 }

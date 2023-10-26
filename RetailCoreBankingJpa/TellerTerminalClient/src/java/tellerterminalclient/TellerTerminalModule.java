@@ -29,16 +29,16 @@ public class TellerTerminalModule {
     private DepositAccSessionBeanRemote depositAccSessionBeanRemote;
     private CustomerSessionBeanRemote customerSessionBeanRemote;
     private AtmCardSessionBeanRemote atmCardSessionBeanRemote;
-    private Customer currCustomer;
+    private long custId;
     
     public TellerTerminalModule() {
     }
     
-    public TellerTerminalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, AtmCardSessionBeanRemote atmCardSessionBeanRemote, Customer currCustomer) {
+    public TellerTerminalModule(DepositAccSessionBeanRemote depositAccSessionBeanRemote, CustomerSessionBeanRemote customerSessionBeanRemote, AtmCardSessionBeanRemote atmCardSessionBeanRemote, long custId) {
         this.depositAccSessionBeanRemote = depositAccSessionBeanRemote;
         this.customerSessionBeanRemote = customerSessionBeanRemote;
         this.atmCardSessionBeanRemote = atmCardSessionBeanRemote;
-        this.currCustomer = currCustomer;
+        this.custId = custId;
     }
 
     public void customerLoginPage() throws UnknownPersistenceException, CustomerNotFoundException, InvalidLoginCredentialException {
@@ -69,7 +69,7 @@ public class TellerTerminalModule {
         }
 
     public void openDepositAccount(Scanner sc) throws UnknownPersistenceException {
-        String welcomeMessage = String.format("\n*** Create a new Deposit Account for %s ***", currCustomer.getFirstName());
+        String welcomeMessage = String.format("\n*** Create a new Deposit Account for %s ***", custId);
         System.out.println(welcomeMessage);
         System.out.println("*** Input Deposit Account Details ***\n");
         
@@ -82,15 +82,16 @@ public class TellerTerminalModule {
         int accType = sc.nextInt();
         System.out.print("Provide Cash Deposit> ");
         BigDecimal cashDeposit = sc.nextBigDecimal();
-        DepositAccount depAccount = new DepositAccount(accNum, DepositAccountType.SAVINGS, cashDeposit, currCustomer);
-        Long depId = depositAccSessionBeanRemote.createNewAccount(depAccount, currCustomer.getCustomerId());
+        DepositAccount depAccount = new DepositAccount(accNum, DepositAccountType.SAVINGS, cashDeposit);
+        System.out.println("cust ID = " + custId);
+        Long depId = depositAccSessionBeanRemote.createNewAccount(depAccount, custId);
         System.out.print("\nDeposit Account Created");
         System.out.println("\nDeposit Account ID = " + depId + "\n");
     }
     
     public void issueAtmCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException {
-        String welcomeMessage = String.format("\n*** Issue new Atm Card for %s ***", currCustomer.getFirstName());
-        System.out.println(welcomeMessage);
+        //String welcomeMessage = String.format("\n*** Issue new Atm Card for %s ***", currCustomer.getFirstName());
+        //System.out.println(welcomeMessage);
         System.out.println("*** Input Atm Card Details ***\n");
         
         System.out.print("Enter your preffered 8 digit ATM Number> ");
@@ -100,7 +101,7 @@ public class TellerTerminalModule {
         System.out.print("Enter 6 Digit Pin> ");
         String pin = sc.nextLine().trim();
         System.out.println("\nAccounts to be linked:\n");
-        Customer cust = customerSessionBeanRemote.getListOfDepAccs(currCustomer.getCustomerId());
+        Customer cust = customerSessionBeanRemote.getListOfDepAccs(custId);
         List<DepositAccount> listOfDepositAccount = cust.getListOfDepositAccount();
         for (int i = 0; i < listOfDepositAccount.size(); i++) {
             String eachAccDetails = String.format("%s: AccountNumber: %s \n   Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
@@ -109,10 +110,11 @@ public class TellerTerminalModule {
         
         System.out.print("Press Y to confirm Linking and N to restart> ");
         if (sc.nextLine().equals("Y")) {
-            AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer);
+            AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin);
             //add stop when they selected all
             //come up with error statement if they picked a deposit account that already has an ATM
-            Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, currCustomer.getCustomerId());
+            System.out.println("CUST ID= " + custId);
+            Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, custId);
             System.out.println("\nLinked Successfully!");
             System.out.println("ATM Card ID = " + atmId);
             System.out.println("\n");
@@ -122,9 +124,9 @@ public class TellerTerminalModule {
     }
     
     public void issueReplacementCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException, InvalidLoginCredentialException {
-        String welcomeMessage = String.format("\n*** Issue Replacement Atm Card for %s ***", currCustomer.getFirstName());
-        System.out.println(welcomeMessage);
-        AtmCard prevAtmC = atmCardSessionBeanRemote.getAtmCard(currCustomer.getCustomerId());
+        //String welcomeMessage = String.format("\n*** Issue Replacement Atm Card for %s ***", currCustomer.getFirstName());
+        //System.out.println(welcomeMessage);
+        AtmCard prevAtmC = atmCardSessionBeanRemote.getAtmCard(custId);
         System.out.print("Replace ATM Card: ");
         System.out.println(prevAtmC.getCardNumber());
         System.out.print("Name: ");
@@ -139,7 +141,7 @@ public class TellerTerminalModule {
             System.out.print("Enter 6 Digit Pin> ");
             String pin = sc.nextLine().trim();
             System.out.println("\nAccounts to be linked:\n");
-            Customer cust = customerSessionBeanRemote.getListOfDepAccs(currCustomer.getCustomerId());
+            Customer cust = customerSessionBeanRemote.getListOfDepAccs(custId);
             List<DepositAccount> listOfDepositAccount = cust.getListOfDepositAccount();
             for (int i = 0; i < listOfDepositAccount.size(); i++) {
                 String eachAccDetails = String.format("%s: AccountNumber: %s \n   Available Balance: %s", i+1, listOfDepositAccount.get(i).getAccountNumber(), listOfDepositAccount.get(i).getAvailableBalance());
@@ -148,10 +150,10 @@ public class TellerTerminalModule {
 
             System.out.print("Press Y to confirm Linking and N to restart> ");
             if (sc.nextLine().equals("Y")) {
-                AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin, currCustomer);
+                AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin);
                 //add stop when they selected all
                 //come up with error statement if they picked a deposit account that already has an ATM
-                Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, currCustomer.getCustomerId());
+                Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, custId);
                 System.out.println("\nLinked Successfully!");
                 System.out.println("ATM Card ID = " + atmId);
                 System.out.println("\n");

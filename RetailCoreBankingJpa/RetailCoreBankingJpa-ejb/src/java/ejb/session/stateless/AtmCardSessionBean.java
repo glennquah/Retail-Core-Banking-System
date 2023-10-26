@@ -34,9 +34,9 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
     public Long createAtmCard(AtmCard newAtmCard, Long custID) throws UnknownPersistenceException {
         try {
             em.persist(newAtmCard);
-            em.flush(); 
             
             Customer cust = em.find(Customer.class, custID);
+            newAtmCard.setCustomer(cust);
             //to get list of deposit accounts (LAZY LOADING)
             Query query = em.createQuery("SELECT c FROM DepositAccount c WHERE c.customer = :customer");
             query.setParameter("customer", cust);
@@ -54,6 +54,7 @@ public class AtmCardSessionBean implements AtmCardSessionBeanRemote, AtmCardSess
             
             //set customer to the new atm card
             cust.setAtmCard(newAtmCard);
+            em.flush(); 
             return newAtmCard.getAtmCardId();
         } catch (PersistenceException exception) {
             throw new UnknownPersistenceException(exception.getMessage());

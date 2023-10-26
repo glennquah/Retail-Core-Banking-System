@@ -27,11 +27,12 @@ public class DepositAccSessionBean implements DepositAccSessionBeanRemote, Depos
     public Long createNewAccount(DepositAccount newDepAcc, Long custID) throws UnknownPersistenceException {
         try {
             em.persist(newDepAcc);
-            em.flush(); 
             Customer cust = em.find(Customer.class, custID);
+            newDepAcc.setCustomer(cust);
             List<DepositAccount> depAccList = cust.getListOfDepositAccount();
             depAccList.add(newDepAcc);
-            cust.setListOfDepAccount(depAccList);      
+            cust.setListOfDepAccount(depAccList);
+            em.flush();
             return newDepAcc.getDepositAccountId();
         } catch (PersistenceException exception) {
             throw new UnknownPersistenceException(exception.getMessage());

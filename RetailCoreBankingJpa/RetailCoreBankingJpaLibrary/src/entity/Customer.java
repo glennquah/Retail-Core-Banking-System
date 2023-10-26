@@ -38,7 +38,7 @@ public class Customer implements Serializable {
     
     @OneToOne (mappedBy="customer")
     private AtmCard atmCard;
-    @OneToMany(mappedBy="customer", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy="customer")
     private List<DepositAccount> listOfDepositAccount = new ArrayList<>();
 
     public Customer() {

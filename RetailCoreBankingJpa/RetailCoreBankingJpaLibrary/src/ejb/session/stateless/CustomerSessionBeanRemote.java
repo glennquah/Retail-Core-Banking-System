@@ -19,6 +19,6 @@ import util.exception.UnknownPersistenceException;
 public interface CustomerSessionBeanRemote {
     public Long createNewAccount(Customer newAccount) throws UnknownPersistenceException;
     public List<Customer> retrieveAllAccounts();
-    public Customer getCustomerAccount(String icNumber) throws CustomerNotFoundException;
+    public Long getCustomerAccount(String icNumber) throws CustomerNotFoundException;
     public Customer getListOfDepAccs(Long custID) throws CustomerNotFoundException;
 }

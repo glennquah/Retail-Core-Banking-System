@@ -90,8 +90,7 @@ public class TellerTerminalModule {
     }
     
     public void issueAtmCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException {
-        //String welcomeMessage = String.format("\n*** Issue new Atm Card for %s ***", currCustomer.getFirstName());
-        //System.out.println(welcomeMessage);
+        System.out.println("*** Issue new Atm Card ***");
         System.out.println("*** Input Atm Card Details ***\n");
         
         System.out.print("Enter your preffered 8 digit ATM Number> ");
@@ -113,7 +112,7 @@ public class TellerTerminalModule {
             AtmCard atmCard = new AtmCard(atmNum, nameOnCard, true, pin);
             //add stop when they selected all
             //come up with error statement if they picked a deposit account that already has an ATM
-            System.out.println("CUST ID= " + custId);
+            //System.out.println("CUST ID= " + custId);
             Long atmId = atmCardSessionBeanRemote.createAtmCard(atmCard, custId);
             System.out.println("\nLinked Successfully!");
             System.out.println("ATM Card ID = " + atmId);
@@ -124,8 +123,7 @@ public class TellerTerminalModule {
     }
     
     public void issueReplacementCard(Scanner sc) throws UnknownPersistenceException, CustomerNotFoundException, InvalidLoginCredentialException {
-        //String welcomeMessage = String.format("\n*** Issue Replacement Atm Card for %s ***", currCustomer.getFirstName());
-        //System.out.println(welcomeMessage);
+        System.out.println("\n*** Issue Replacement Atm Card ***");
         AtmCard prevAtmC = atmCardSessionBeanRemote.getAtmCard(custId);
         System.out.print("Replace ATM Card: ");
         System.out.println(prevAtmC.getCardNumber());

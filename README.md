@@ -1,4 +1,4 @@
-# Holiday Reservation System
+# Retail Core Banking System
 
 ## Overview
 

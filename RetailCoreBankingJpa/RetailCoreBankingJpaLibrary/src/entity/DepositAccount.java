@@ -6,6 +6,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,7 +55,7 @@ public class DepositAccount implements Serializable {
     public DepositAccount() {
     }
 
-    public DepositAccount(String accountNumber, DepositAccountType accountType, BigDecimal availableBalance, Customer customer) {
+    public DepositAccount(String accountNumber, DepositAccountType accountType, BigDecimal availableBalance) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.availableBalance = availableBalance;
@@ -62,7 +63,7 @@ public class DepositAccount implements Serializable {
         this.ledgerBalance = BigDecimal.ZERO;
         this.enabled = true;
         this.atmCard = null;
-        this.customer = customer;
+        this.customer = null;
         this.listOfTransactions = null;
     }
     

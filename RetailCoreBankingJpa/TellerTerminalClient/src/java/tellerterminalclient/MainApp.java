@@ -99,16 +99,19 @@ public class MainApp {
             response = sc.nextInt();
             sc.nextLine();
             if(response == 1) {
-                currentCustomer = createACustomer(sc);
-                String createCustMsg = String.format("\n*** %s's Account Created***\n", currentCustomer.getFirstName());
-                System.out.println(createCustMsg);                  
-                TellerMod = new TellerTerminalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
+                //currentCustomer
+                long id = createACustomer(sc);
+                //String createCustMsg = String.format("\n*** %s's Account Created***\n", currentCustomer.getFirstName());
+                //System.out.println(createCustMsg);
+                System.out.println("customer ID = " + id);
+                TellerMod = new TellerTerminalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, id);
                 TellerMod.customerLoginPage();
             } else if (response == 2) {
-                currentCustomer = recurringCust(sc);
+                //currentCustomer = recurringCust(sc);
                 String foundCustMsg = String.format("\n*** %s's Account found***\n", currentCustomer.getFirstName());
                 System.out.println(foundCustMsg);
-                TellerMod = new TellerTerminalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer);
+                //System.out.println("customer ID = " + currentCustomer.getCustomerId());
+                TellerMod = new TellerTerminalModule(depositAccSessionBeanRemote, customerSessionBeanRemote, atmCardSessionBeanRemote, currentCustomer.getCustomerId());
                 TellerMod.customerLoginPage();
             } else if (response == 3) {
                 runApp();
@@ -118,7 +121,7 @@ public class MainApp {
         }
     }
     
-    public Customer createACustomer(Scanner sc) throws UnknownPersistenceException {
+    public long createACustomer(Scanner sc) throws UnknownPersistenceException {
         System.out.println("\n*** Create A Customer ***");
         System.out.println("*** Input Customer Details ***\n\n");
         
@@ -143,15 +146,15 @@ public class MainApp {
         System.out.println("\nCustomer Created!");
         System.out.println("Customer ID = " + id);
         
-        return newCustomer;
+        return id;
     }
     
-    public Customer recurringCust(Scanner sc) throws CustomerNotFoundException {
-        System.out.println("\n*** Recurring Customer ***");
-        System.out.print("Enter Customer Identification Number> ");
-        String ICNumber = sc.nextLine().trim();
-        
-        Customer cust = customerSessionBeanRemote.getCustomerAccount(ICNumber);
-        return cust;
-    }
+//    public Customer recurringCust(Scanner sc) throws CustomerNotFoundException {
+//        System.out.println("\n*** Recurring Customer ***");
+//        System.out.print("Enter Customer Identification Number> ");
+//        String ICNumber = sc.nextLine().trim();
+//        
+//        Customer cust = customerSessionBeanRemote.getCustomerAccount(ICNumber);
+//        return cust;
+//    }
 }

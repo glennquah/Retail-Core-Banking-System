@@ -42,12 +42,12 @@ public class AtmCard implements Serializable {
     public AtmCard() {
     }
 
-    public AtmCard(String cardNumber, String nameOnCard, Boolean enabled, String pin, Customer customer) {
+    public AtmCard(String cardNumber, String nameOnCard, Boolean enabled, String pin) {
         this.cardNumber = cardNumber;
         this.nameOnCard = nameOnCard;
         this.enabled = enabled;
         this.pin = pin;
-        this.customer = customer;
+        this.customer = null;
         this.listOfDepositAccount = null;
     }
     
